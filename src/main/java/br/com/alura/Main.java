@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.*;
@@ -32,7 +33,10 @@ public class Main {
                 String moviesArray = body.substring(body.indexOf("["), body.lastIndexOf("]") + 1);
                 List<Movie> movies = mapper.readValue(moviesArray, new TypeReference<>() {});
 
-                System.out.println(movies);
+                try (PrintWriter writer = new PrintWriter("index.html")) {
+                    HTMLGenerator generator = new HTMLGenerator(writer);
+                    generator.generate(movies);
+                }
             }
         } catch (URISyntaxException | IOException | InterruptedException e) {
             System.err.println(e.getMessage());
