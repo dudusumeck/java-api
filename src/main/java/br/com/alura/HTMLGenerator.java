@@ -10,7 +10,7 @@ public class HTMLGenerator {
         this.writer = writer;
     }
 
-    public void generate(List<Movie> movies) {
+    public void generate(List<? extends Content> contentList) {
         StringBuilder builder = new StringBuilder();
         builder.append("<!DOCTYPE html>");
         builder.append("<html lang=\"en\">");
@@ -23,12 +23,12 @@ public class HTMLGenerator {
         builder.append("<body>");
         builder.append("<div class=\"container text-center\">");
         builder.append("<div class=\"row\">");
-        for (Movie movie : movies) {
+        for (Content content : contentList) {
             builder.append("<div class=\"card text-bg-secondary m-3\" style=\"max-width: 18rem;\">");
-            builder.append("<img src=\"https://image.tmdb.org/t/p/w500").append(movie.posterPath()).append("\" class=\"card-img-top\" alt=\"").append(movie.title()).append(" poster\">");
+            builder.append("<img src=\"https://image.tmdb.org/t/p/w500").append(content.urlImage()).append("\" class=\"card-img-top\" alt=\"").append(content.title()).append(" poster\">");
             builder.append("<div class=\"card-body\">");
-            builder.append("<h5 class=\"card-title\">").append(movie.title()).append("</h5>");
-            builder.append("<p class=\"card-text\">Vote average: ").append(String.format("%.2f", movie.voteAverage())).append(" - Year: ").append(movie.releaseDate().getYear()).append("</p>");
+            builder.append("<h5 class=\"card-title\">").append(content.title()).append("</h5>");
+            builder.append("<p class=\"card-text\">Rating: ").append(content.rating()).append(" - Year: ").append(content.year()).append("</p>");
             builder.append("</div>");
             builder.append("</div>");
         }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.util.List;
 
-public class TmdbMovieJsonParser {
+public class TmdbMovieJsonParser implements JsonParser {
     private static final ObjectMapper mapper;
     private final String json;
 
@@ -20,12 +20,17 @@ public class TmdbMovieJsonParser {
         this.json = json;
     }
 
-    public List<Movie> parse() throws JsonProcessingException {
-        String moviesArray = getMoviesArray();
-        return mapper.readValue(moviesArray, new TypeReference<>() {});
+    @Override
+    public List<Movie> parse() {
+        String moviesArray = findMoviesArray();
+        try {
+            return mapper.readValue(moviesArray, new TypeReference<>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private String getMoviesArray() {
+    private String findMoviesArray() {
         return json.substring(json.indexOf("["), json.lastIndexOf("]") + 1);
     }
 }
