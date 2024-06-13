@@ -2,8 +2,7 @@ package br.com.alura;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,6 +12,7 @@ public class Main {
         try (PrintWriter writer = new PrintWriter("index.html")) {
             String rawMovies = new TmdbApiClient(apiKey).getBody();
             List<Movie> movies = new TmdbMovieJsonParser(rawMovies).parse();
+            movies.sort(Comparator.reverseOrder());
             new HTMLGenerator(writer).generate(movies);
         } catch (IOException e) {
             throw new RuntimeException(e);

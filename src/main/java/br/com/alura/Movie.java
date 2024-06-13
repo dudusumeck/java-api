@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public record Movie (@JsonProperty("poster_path") String posterPath,
                      @JsonProperty("release_date") LocalDate releaseDate,
                      String title,
-                     @JsonProperty("vote_average") Double voteAverage) implements Content {
+                     @JsonProperty("vote_average") Double voteAverage) implements Content, Comparable<Movie> {
     @Override
     public String urlImage() {
         return posterPath;
@@ -23,5 +23,10 @@ public record Movie (@JsonProperty("poster_path") String posterPath,
     @Override
     public String year() {
         return String.valueOf(releaseDate.getYear());
+    }
+
+    @Override
+    public int compareTo(Movie other) {
+        return rating().compareTo(other.rating());
     }
 }
